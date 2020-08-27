@@ -1,0 +1,356 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>MATLAB Programing</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-08-27"><meta name="DC.source" content="Data_Wrangling.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>MATLAB Programing</h1><!--introduction--><p><b>Ebude Yolande</b></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">1.Dealing with columns in a dataset</a></li><li><a href="#14">2.	Selecting subsets and merging of datasets.</a></li><li><a href="#23">3. Reusable Code</a></li></ul></div><p>The following datasets would be used throughout this worksheet:</p><div><ul><li>IoT sensor dataset: <a href="https://drive.google.com/file/d/1xsiMGpOULuO3Ei2U4lyUpmtTLOVHaAB3/view?usp=sharing">https://drive.google.com/file/d/1xsiMGpOULuO3Ei2U4lyUpmtTLOVHaAB3/view?usp=sharing</a></li><li>Grid bikeshare data: <a href="https://drive.google.com/file/d/1mwQV2uDxRuEwULFdVKC8H9NZXRCkARkK/view?usp=sharing">https://drive.google.com/file/d/1mwQV2uDxRuEwULFdVKC8H9NZXRCkARkK/view?usp=sharing</a></li></ul></div><h2 id="2">1.Dealing with columns in a dataset</h2><pre class="codeinput"><span class="comment">%Manipulating data columns, making them easy to interprete and use in analysis.</span>
+</pre><pre class="codeinput">iot = readtable(<span class="string">'iot_telemetry_data.csv'</span>);
+head(iot,3)
+</pre><pre class="codeoutput">
+ans =
+
+  3&times;9 table
+
+              ts                    device                     co               humidity     light              lpg              motion             smoke                     temp        
+    ______________________    ___________________    _______________________    ________    _______    ______________________    _______    ______________________    ____________________
+
+    '1.5945120943859746E9'    'b8:27:eb:bf:9d:51'    '0.004955938648391245'      '51.0'     'false'    '0.00765082227055719'     'false'    '0.02041127012241292'     '22.7'              
+    '1.5945120947355676E9'    '00:0f:00:70:91:0a'    '0.0028400886071015706'     '76.0'     'false'    '0.005114383400977071'    'false'    '0.013274836704851536'    '19.700000762939453'
+    '1.5945120980735729E9'    'b8:27:eb:bf:9d:51'    '0.004976012340421658'      '50.9'     'false'    '0.007673227406398091'    'false'    '0.02047512557617824'     '22.6'              
+
+</pre><pre class="codeinput"><span class="comment">%Get more information on the dataset</span>
+summary(iot);
+height(iot);  <span class="comment">%number of rows</span>
+width(iot); <span class="comment">%number of columns</span>
+size(iot); <span class="comment">% both number of rows and columns</span>
+</pre><pre class="codeoutput">
+Variables:
+
+    ts: 405184&times;1 cell array of character vectors
+
+    device: 405184&times;1 cell array of character vectors
+
+    co: 405184&times;1 cell array of character vectors
+
+    humidity: 405184&times;1 cell array of character vectors
+
+    light: 405184&times;1 cell array of character vectors
+
+    lpg: 405184&times;1 cell array of character vectors
+
+    motion: 405184&times;1 cell array of character vectors
+
+    smoke: 405184&times;1 cell array of character vectors
+
+    temp: 405184&times;1 cell array of character vectors
+
+</pre><pre class="codeinput"><span class="comment">%Get more information from a function</span>
+<span class="comment">%help('readtable');</span>
+</pre><pre class="codeinput"><span class="comment">%Convert the character to float</span>
+<span class="keyword">for</span> i=[1,3,4,6,8,9]
+    iot.(i)=str2double(iot.(i));
+<span class="keyword">end</span>
+<span class="comment">%head(iot,3)</span>
+</pre><pre class="codeinput"><span class="comment">%Convert column ts to readable datetime</span>
+iot.ts=datestr(iot.ts,31); <span class="comment">% check datestr function using help</span>
+iot.ts(1:6);
+</pre><pre class="codeinput"><span class="comment">%The decimal points on the columns with type double.</span>
+<span class="keyword">for</span> i=[3,4,6,8,9]
+    iot.(i)=round(iot.(i),4);
+<span class="keyword">end</span>
+head(iot,3);
+</pre><p>Exercise 1 We would look at the free bike dataset.</p><p>1. Import json file</p><pre class="codeinput">BShare=jsondecode(fileread(<span class="string">'free-bike-status-1.json'</span>));
+<span class="comment">%BShare is a structure, we can read the name column as</span>
+BShare.data.bikes.name;
+<span class="comment">%To bring it to the table we use struct2table function</span>
+BShare=struct2table(BShare.data.bikes);
+head(BShare,3);
+</pre><p>2. Removing unecessary info</p><pre class="codeinput">new=cell([1,height(BShare)]); <span class="comment">% create empty cell</span>
+<span class="keyword">for</span> i=1:height(BShare)
+    val=strsplit(cell2mat(BShare.bike_id(i)),<span class="string">'_'</span>); <span class="comment">% cell2mat get the string from the cell</span>
+    new(i)=val(2);
+<span class="keyword">end</span>
+BShare.(<span class="string">'id'</span>)=str2double(new');
+head(BShare,3);
+</pre><p>3. Save in txt</p><pre class="codeinput">BShare.(<span class="string">'rec_update'</span>)=iot.ts(1:21,:);
+writetable(BShare,<span class="string">'bike-share.xlsx'</span>);
+writetable(iot(1:100,:),<span class="string">'iot.xlsx'</span>);
+</pre><p>Challenge I:</p><div><ul><li>1. Import iot excel file</li><li>2. Modify the device column by removing the colon that separate each term (for example 1c:bf:ce:15:ec:4d becomes 1cbfce15ec4d).</li></ul></div><h2 id="14">2.	Selecting subsets and merging of datasets.</h2><p>Selecting the appropraite subset of a data to use as well as merging different datasets are very important.</p><pre class="codeinput">iot(1:4, :); <span class="comment">% first 4 elements in the table, you can select the columns as well</span>
+iot.(<span class="string">'ts'</span>); <span class="comment">% replace 'ts' with 1 if you knew just the position</span>
+</pre><p>From the iot_telemery csv dataset, we would select the data of device b8:27:eb:bf:9d:51.</p><pre class="codeinput">iot_d1=iot(strcmp(iot.device, <span class="string">'b8:27:eb:bf:9d:51'</span>), :);
+head(iot_d1,3);
+<span class="comment">% we can add more conditions</span>
+iot_d2=iot(iot.co &gt;0.005 &amp; iot.temp &gt; 19.0,:);
+head(iot_d2,3);
+</pre><p>We would merge the two new datasets to reconstruct the old dataset.</p><pre class="codeinput">iot_d = [iot_d1; iot_d2];
+head(iot_d, 3);
+</pre><p>Exercise II:</p><p>1. Creating a vector from taking the last 30 elements in a column ts of iot_d2 and assign to first 30 elements in iot_d1, for example x=[2,6,4,8,1,5,8,9], new_x=[9,8,5,1]</p><pre class="codeinput">iot_d1.(<span class="string">'ts'</span>)(1:30,:)= flip(iot.ts(height(iot)-29:height(iot),:));
+head(iot_d1,3);
+</pre><p>2.Create a new dataset of iot data merging iot_d1 and iot_d2 based on column ts.</p><pre class="codeinput">iot_d=innerjoin(iot_d1, iot_d2,<span class="string">'key'</span>,<span class="string">'ts'</span>);
+head(iot_d,3);
+</pre><p>Challenge II</p><div><ul><li>1. Remove the column 'is_disabled' from the bike share excel dataset.</li><li>2. Merge the new bike-share.xlsx and iot.xlsx depending on time</li><li>3. Create a new dataset which is the subset of the one in 2. where the co value is greater than the mean value of the iot.xlsx dataset.</li></ul></div><h2 id="23">3. Reusable Code</h2><pre class="codeinput"><span class="comment">% Functions: It is important to write codes in functions so they can be</span>
+<span class="comment">% easily used.</span>
+<span class="comment">% roundallcol is a function which takes a table, round the values which are</span>
+<span class="comment">% of class double then return the modify table</span>
+</pre><pre class="codeinput">iot_mod=roundallcol(iot,3);
+head(iot_mod,3);
+</pre><p>Process: This is a void function, it just executes instructions. This process takes an interger and multiply to a random number, then ask the player to guess the random number.</p><p>uncomment and run guessrand(8);</p><p>Call another script into this script. It is good practice to keep functions in separate script and just call them into your working script</p><pre class="codeinput">iot_m=rmuwinfo(BShare,<span class="string">'bike_id'</span>,<span class="string">'_'</span>);
+head(iot_m,3);
+</pre><p>Functions must always be at the end of the script</p><pre class="codeinput"><span class="keyword">function</span> tab = roundallcol(dt,num) <span class="comment">% Function</span>
+    <span class="keyword">for</span> i=1: width(dt)
+        <span class="keyword">if</span> (class(dt.(i))== <span class="string">"double"</span>) <span class="comment">% chechs if class of column is double</span>
+            dt.(i)=round(dt.(i),num); <span class="comment">% rounds all values</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    tab = dt;
+<span class="keyword">end</span>
+
+
+<span class="keyword">function</span> guessrand(a) <span class="comment">% Process</span>
+    b=randi(50);
+    disp(<span class="string">'Result of multiplication'</span>); <span class="comment">% print information on command window</span>
+    disp(b*a);
+    quest= <span class="string">'Suggest the number: '</span>; <span class="comment">% Request user input</span>
+    x=input(quest);
+    <span class="keyword">if</span> (b==x)
+        disp(<span class="string">'Good Guess!!!'</span>);
+
+    <span class="keyword">else</span>
+            disp(<span class="string">'Wrong Guess!'</span>);
+            disp(b);
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% MATLAB Programing
+% *Ebude Yolande*
+
+%%
+% The following datasets would be used throughout this worksheet:
+% 
+% * IoT sensor dataset:
+% <https://drive.google.com/file/d/1xsiMGpOULuO3Ei2U4lyUpmtTLOVHaAB3/view?usp=sharing>
+% * Grid bikeshare data:
+% <https://drive.google.com/file/d/1mwQV2uDxRuEwULFdVKC8H9NZXRCkARkK/view?usp=sharing>
+% 
+
+%% 1.Dealing with columns in a dataset
+%Manipulating data columns, making them easy to interprete and use in analysis. 
+%%
+iot = readtable('iot_telemetry_data.csv');
+head(iot,3)
+
+%%
+%Get more information on the dataset
+summary(iot);
+height(iot);  %number of rows
+width(iot); %number of columns
+size(iot); % both number of rows and columns
+%%
+%Get more information from a function
+%help('readtable');
+%%
+%Convert the character to float
+for i=[1,3,4,6,8,9]
+    iot.(i)=str2double(iot.(i));
+end
+%head(iot,3)
+%%
+%Convert column ts to readable datetime
+iot.ts=datestr(iot.ts,31); % check datestr function using help
+iot.ts(1:6);
+%%
+%The decimal points on the columns with type double.
+for i=[3,4,6,8,9]
+    iot.(i)=round(iot.(i),4);
+end
+head(iot,3);
+%%
+% Exercise 1
+% We would look at the free bike dataset.
+
+%%
+% 1. Import json file
+BShare=jsondecode(fileread('free-bike-status-1.json'));
+%BShare is a structure, we can read the name column as
+BShare.data.bikes.name;
+%To bring it to the table we use struct2table function
+BShare=struct2table(BShare.data.bikes);
+head(BShare,3);
+
+%%
+% 2. Removing unecessary info
+new=cell([1,height(BShare)]); % create empty cell
+for i=1:height(BShare)
+    val=strsplit(cell2mat(BShare.bike_id(i)),'_'); % cell2mat get the string from the cell
+    new(i)=val(2); 
+end
+BShare.('id')=str2double(new');
+head(BShare,3);
+%%
+% 3. Save in txt
+BShare.('rec_update')=iot.ts(1:21,:);
+writetable(BShare,'bike-share.xlsx');
+writetable(iot(1:100,:),'iot.xlsx');
+
+%%
+% Challenge I:
+%
+% * 1. Import iot excel file
+% * 2. Modify the device column by removing the colon that separate each term (for example 1c:bf:ce:15:ec:4d becomes 1cbfce15ec4d).
+%% 2.	Selecting subsets and merging of datasets.
+% Selecting the appropraite subset of a data to use as well as merging different datasets are very important.
+iot(1:4, :); % first 4 elements in the table, you can select the columns as well
+iot.('ts'); % replace 'ts' with 1 if you knew just the position
+%%
+% From the iot_telemery csv dataset, we would select the data of device b8:27:eb:bf:9d:51.
+iot_d1=iot(strcmp(iot.device, 'b8:27:eb:bf:9d:51'), :);
+head(iot_d1,3);
+% we can add more conditions
+iot_d2=iot(iot.co >0.005 & iot.temp > 19.0,:);
+head(iot_d2,3);
+
+%%
+% We would merge the two new datasets to reconstruct the old dataset.
+iot_d = [iot_d1; iot_d2];
+head(iot_d, 3);
+
+%% 
+% Exercise II:
+%%
+% 1. Creating a vector from taking the last 30 elements in a column ts of iot_d2 and assign to first 30 elements in iot_d1, for example
+% x=[2,6,4,8,1,5,8,9], new_x=[9,8,5,1]
+
+%%
+iot_d1.('ts')(1:30,:)= flip(iot.ts(height(iot)-29:height(iot),:));
+head(iot_d1,3);
+
+%%
+% 2.Create a new dataset of iot data merging iot_d1 and iot_d2 based on column ts.
+%%
+iot_d=innerjoin(iot_d1, iot_d2,'key','ts');
+head(iot_d,3);
+%%
+% Challenge II
+%
+% * 1. Remove the column 'is_disabled' from the bike share excel dataset.
+% * 2. Merge the new bike-share.xlsx and iot.xlsx depending on time
+% * 3. Create a new dataset which is the subset of the one in 2. where the co value is greater than the mean value of the iot.xlsx dataset.
+%% 3. Reusable Code
+
+% Functions: It is important to write codes in functions so they can be
+% easily used.
+% roundallcol is a function which takes a table, round the values which are
+% of class double then return the modify table
+%%
+iot_mod=roundallcol(iot,3);
+head(iot_mod,3);
+%%
+% Process: This is a void function, it just executes
+% instructions.
+% This process takes an interger and multiply to a random number, then
+% ask the player to guess the random number.
+%%
+% uncomment and run
+ % guessrand(8);
+%%
+% Call another script into this script.
+% It is good practice to keep functions in separate script and just call
+% them into your working script
+%%
+iot_m=rmuwinfo(BShare,'bike_id','_');
+head(iot_m,3);
+%%
+% Functions must always be at the end of the script
+%%
+function tab = roundallcol(dt,num) % Function
+    for i=1: width(dt)
+        if (class(dt.(i))== "double") % chechs if class of column is double
+            dt.(i)=round(dt.(i),num); % rounds all values
+        end
+    end 
+    tab = dt;
+end
+
+
+function guessrand(a) % Process
+    b=randi(50);
+    disp('Result of multiplication'); % print information on command window
+    disp(b*a);
+    quest= 'Suggest the number: '; % Request user input
+    x=input(quest);
+    if (b==x) 
+        disp('Good Guess!!!');
+       
+    else 
+            disp('Wrong Guess!');
+            disp(b);
+    end
+end 
+
+
+##### SOURCE END #####
+--></body></html>

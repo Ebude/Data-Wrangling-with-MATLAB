@@ -1,0 +1,133 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Data Wrangling Challenge Solutions</title><meta name="generator" content="MATLAB 9.6"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-08-27"><meta name="DC.source" content="Challenge_Solution.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Data Wrangling Challenge Solutions</h1><!--introduction--><p><b>Ebude Yolande</b></p><!--/introduction--><p>Challenge I:</p><p>1. Import iot excel file</p><pre class="codeinput">iot_xlsx=readtable(<span class="string">'iot.xlsx'</span>);
+head(iot_xlsx,3);
+</pre><p>2. Modify the device column by removing the colon that separate each term (for example 1c:bf:ce:15:ec:4d becomes 1cbfce15ec4d).</p><pre class="codeinput">new=[]; <span class="comment">% create empty list</span>
+<span class="keyword">for</span> i=1:height(iot_xlsx)
+    val=strsplit(cell2mat(iot_xlsx.device(i)),<span class="string">':'</span>);<span class="comment">% cell2mat get the string from the cell</span>
+    val1=join(val,<span class="string">''</span>);<span class="comment">% join all the item in the list with no space</span>
+    new=[new val1(1)]; <span class="comment">% append to a list</span>
+<span class="keyword">end</span>
+iot_xlsx.(<span class="string">'new_device'</span>)=new'; <span class="comment">%'transpose list</span>
+head(iot_xlsx,3);
+</pre><p>Challenge II</p><pre>1. Remove the column 'is_disabled' from the bike share excel dataset.</pre><pre class="codeinput">BShare_xlsx=readtable(<span class="string">'bike-share.xlsx'</span>);
+BShare_xlsx=removevars(BShare_xlsx,<span class="string">'is_disabled'</span>);
+head(BShare_xlsx,3);
+<span class="comment">% use movevars(BShare_xlsx,'lon','After','lat') or</span>
+<span class="comment">% movevars(BShare_xlsx,'lon','Before','bike_id') to move column position</span>
+</pre><pre>2. Merge the new bike-share.xlsx and iot.xlsx depending on time</pre><pre class="codeinput">BShare_xlsx.(<span class="string">'ts'</span>)=BShare_xlsx.(<span class="string">'rec_update'</span>);
+BShare_iot=innerjoin(BShare_xlsx,iot_xlsx,<span class="string">'key'</span>,<span class="string">'ts'</span>);
+head(BShare_iot,3);
+</pre><pre>3. Create a new dataset which is the subset of the one in 2. where the co value is greater than the mean value of the iot.xlsx dataset.</pre><pre class="codeinput">BShare_iot_m=BShare_iot(BShare_iot.co &gt; mean(iot_xlsx.co),:);
+head(BShare_iot_m,3);
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Data Wrangling Challenge Solutions
+% *Ebude Yolande*
+%%
+% Challenge I:
+%
+% 1. Import iot excel file
+%%
+iot_xlsx=readtable('iot.xlsx');
+head(iot_xlsx,3);
+%%
+% 2. Modify the device column by removing the colon that separate each term (for example 1c:bf:ce:15:ec:4d becomes 1cbfce15ec4d).
+%%
+new=[]; % create empty list
+for i=1:height(iot_xlsx)
+    val=strsplit(cell2mat(iot_xlsx.device(i)),':');% cell2mat get the string from the cell
+    val1=join(val,'');% join all the item in the list with no space
+    new=[new val1(1)]; % append to a list
+end
+iot_xlsx.('new_device')=new'; %'transpose list
+head(iot_xlsx,3);
+%%
+% Challenge II
+%
+%  1. Remove the column 'is_disabled' from the bike share excel dataset.
+%%
+BShare_xlsx=readtable('bike-share.xlsx');
+BShare_xlsx=removevars(BShare_xlsx,'is_disabled');
+head(BShare_xlsx,3);
+% use movevars(BShare_xlsx,'lon','After','lat') or
+% movevars(BShare_xlsx,'lon','Before','bike_id') to move column position
+%%
+%  2. Merge the new bike-share.xlsx and iot.xlsx depending on time
+%%
+BShare_xlsx.('ts')=BShare_xlsx.('rec_update');
+BShare_iot=innerjoin(BShare_xlsx,iot_xlsx,'key','ts');
+head(BShare_iot,3);
+%%
+%  3. Create a new dataset which is the subset of the one in 2. where the co value is greater than the mean value of the iot.xlsx dataset.
+%%
+BShare_iot_m=BShare_iot(BShare_iot.co > mean(iot_xlsx.co),:);
+head(BShare_iot_m,3);
+##### SOURCE END #####
+--></body></html>
